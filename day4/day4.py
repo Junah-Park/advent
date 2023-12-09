@@ -13,30 +13,32 @@ class Points:
             self.amount *= 2
 
 def main():
-
     with open('input.txt') as f:
         total = 0
         copies = {}
+        #map each card number to number of copies
         for line in f:
             winningSet = set()
             points = 0
+
+            #preprocess
             line = line.strip()
             line = line.split(":")
-            card = int(line.split(" ")[1])
+            card = int(line[0].strip().split(" ")[-1])
             line = line[1]
             line = line.split("|")
             winning, hand = line[0], line[1]
             
-            winning = [s for s in winning.split(" ") if s]
+            winning = set([s for s in winning.split(" ") if s])
             hand = [s for s in hand.split(" ") if s]
-
-            for num in winning:
-                winningSet.add(num)
+            
             for num in hand:
-                if num in winningSet:
+                if num in winning:
                     points+=1
-            for i in range(points):
-                copies[card+i] = copies.get(card+1, 0) + 1
+            
+            total += copies.get(card, 1)
+            for i in range(1, points+1):
+                copies[card+i] = copies.get(card+i, 1) + copies.get(card, 1)
             
 
             # iterate through winning and add to set until '|' is encountered
