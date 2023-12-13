@@ -17,9 +17,7 @@ def main():
     # hashmap of every digit coordinate: number
     # infer which spaces map to number using curNum length
     # at the end, loop through every "*" to look for number
-    sum = 0
     curNum = ""
-    confirmed = False
     numMap = {}
     gears = []
     id = 1
@@ -30,9 +28,6 @@ def main():
             if not schematic[row][col].isdigit():
                 if schematic[row][col] == "*":
                     gears.append((row,col))
-                if confirmed:
-                    if curNum:
-                        sum += int(curNum)
                 for subCol in range(col-len(curNum), col):
                     numMap[(row,subCol)] = ( int(curNum), id )
                 id += 1
@@ -41,16 +36,11 @@ def main():
                 continue
             if schematic[row][col].isdigit():
                 curNum += schematic[row][col]
-                # search around for symbol
-                for subRow in range(row-1, row+2):
-                    for subCol in range(col-1, col+2):
-                        if subRow >= 0 and subCol >= 0 and subRow < len(schematic) and subCol < len(schematic[subRow]):
-                            if not schematic[subRow][subCol].isdigit() and not schematic[subRow][subCol] == ".":
-                                confirmed = True
-        if confirmed and curNum:
-            sum += int(curNum)
-        confirmed = False
+        
+        for subCol in range(col-len(curNum), col):
+            numMap[(row,subCol)] = ( int(curNum), id )
         curNum = ""
+
     for row,col in gears:
         ratio = 1
         visitedIds = set()
@@ -66,7 +56,6 @@ def main():
         else:
             ratioSum += ratio
 
-    print(sum)
     print(ratioSum)
     return 0
 
