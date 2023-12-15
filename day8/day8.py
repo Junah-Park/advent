@@ -1,10 +1,10 @@
+import math
 def main():
     input = []
     with open('input.txt') as f:
         for line in f:
             input.append(line)
     steps = input[0].strip()
-    print(steps)
     netMap = {}
     curNodes = []
     Zs = set()
@@ -20,19 +20,46 @@ def main():
         right = values[1][1:4]
         netMap[key] = (left, right)
     
+    visitedZs = [{}] * len(curNodes)
+    cycleLengths = [None] * len(curNodes)
     count = 0
-    curKey = 'AAA'
-    while curKey != 'ZZZ':
-        for step in steps:
+    # 1 2 3 
+    # 1 2 3 4
+    print(curNodes)
+    print(Zs)
+    def stepAll(step, count):
+        allZs = True
+        for i, node in enumerate(curNodes):
             if step == 'L':
-                curKey = netMap[curKey][0]
+                nextNode = netMap[node][0]
+                if nextNode[-1] == 'Z':
+                    cycleLengths[i] = count
+                if nextNode[-1] != 'Z':
+                    allZs = False
             else:
-                curKey = netMap[curKey][1]
+                nextNode = netMap[node][1]
+                if nextNode[-1] == 'Z':
+                    cycleLengths[i] = count
+                if nextNode[-1] != 'Z':
+                    allZs = False
+            curNodes[i] = nextNode
+        return allZs
+
+    while True:
+        for step in steps:
             count += 1
-            if curKey == 'ZZZ':
+            if stepAll(step, count):
                 print(count)
-                return count
-    return count
+                return
+            lcm = True
+            for cycleLength in cycleLengths:
+                if not cycleLength:
+                    lcm = False
+                    break
+            if lcm:
+                lcm = math.lcm(*cycleLengths)
+                print(lcm)
+                return
         
 if __name__ == "__main__":
     main()
