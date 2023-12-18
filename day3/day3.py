@@ -31,7 +31,6 @@ def main():
                 for subCol in range(col-len(curNum), col):
                     numMap[(row,subCol)] = ( int(curNum), id )
                 id += 1
-                confirmed = False
                 curNum = ""
                 continue
             if schematic[row][col].isdigit():

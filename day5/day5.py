@@ -68,7 +68,8 @@ def main():
     while i < len(seeds):
         seedRanges.append((seeds[i], seeds[i+1]))
         i += 2
-
+    
+    seedRanges.sort(key=lambda x: x[0])
     lowestLocation = math.inf
     maps = [seedSoil, soilFertilizer, fertilizerWater, waterLight, lightTemperature,temperatureHumidity, humidityLocation]
     
@@ -102,7 +103,8 @@ def main():
                     newSeedRanges.append
                 # mapStart, seedStart, mapEnd, seedEnd
 
-                seedRanges = newSeedRanges
+            seedRanges = newSeedRanges
+            seedRanges.sort(key=lambda x: x[0])
     
     # index = 0
     # while index < len(seeds):
