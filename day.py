@@ -1,6 +1,6 @@
 def main():
     input = []
-    with open('input.txt') as f:
+    with open('test.txt') as f:
         for line in f:
             input.append(line.strip())
             
